@@ -266,7 +266,6 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 
 
 .str-wcard-hdr{display:flex;align-items:center;gap:8px;padding:12px 14px;cursor:pointer;user-select:none;min-height:50px}
 .str-wcard-hdr:active{background:var(--bg3)}
-.str-w-focus{font-size:11px;color:var(--txt3);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .str-body{padding:12px 14px 4px}
 .str-body.open{display:block}
 .str-run-info{display:flex;justify-content:space-between;font-size:11px;color:var(--txt3);padding:0 14px 10px;font-family:'DM Mono',monospace}
@@ -1000,7 +999,6 @@ function renderStrPhase(){
     const badgeCls=wk.holiday?'str-badge-holiday':wk.phase==='Taper'?'str-badge-taper':wk.phase==='Peak'?'str-badge-peak':wk.phase==='Race'?'str-badge-race':'str-badge-build';
     const key=strCurrentPhase+'_'+wk.w;
     const isOpen=!!strOpen[key];
-    const sessCount=wk.sessions.reduce((s,sess)=>s+sess.exs.length,0);
     let bodyHtml='';
     if(isOpen){
       let inner='';
@@ -1016,12 +1014,11 @@ function renderStrPhase(){
     }
     html+=`<div class="str-wcard${phClass?' '+phClass:''}" id="strWeek_${wk.w}">
       <div class="str-wcard-hdr" onclick="toggleStrWeek('${key}')">
-        <div class="str-w-label">W${wk.w} · ${wk.date}</div>
-        <div class="str-w-focus">${wk.sessions[0]?wk.sessions[0].exs[0].n+' +${sessCount} exercises':''}</div>
+        <div class="str-w-label">W${wk.w} <span style="color:var(--txt3);font-weight:400">· ${wk.date}</span></div>
+        <div style="font-size:11px;color:var(--txt3);font-family:'DM Mono',monospace;flex:1;min-width:0">Long: <strong style="color:var(--txt2)">${wk.long}</strong> · Vol: <strong style="color:var(--txt2)">${wk.vol}</strong></div>
         <span class="str-w-badge ${badgeCls}">${wk.phase}</span>
         <div class="w-chev${isOpen?' open':''}">▾</div>
       </div>
-      <div class="str-run-info" style="padding:0 14px 8px;margin:0;border-bottom:${isOpen?'1px solid var(--border)':'none'}"><span>Long: <strong>${wk.long}</strong></span><span>Vol: <strong>${wk.vol}</strong></span></div>
       ${bodyHtml}
     </div>`;
   });
