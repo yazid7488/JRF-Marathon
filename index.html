@@ -52,7 +52,7 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 
 .leg{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--txt2)}
 .leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
 .weeks{display:flex;flex-direction:column;gap:6px}
-.week-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.week-card{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;overflow:hidden;transition:border-color .15s}
 .week-card.current{border-color:var(--orange)}
 .week-card.phase-taper{border-left:3px solid var(--purple)}
 .week-card.phase-race{border-left:3px solid var(--red)}
@@ -97,10 +97,10 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 
 .vol-km{font-size:9px;color:var(--txt3);width:42px;text-align:right;font-family:'DM Mono',monospace;flex-shrink:0}
 .vol-row.curr .vol-label,.vol-row.curr .vol-km{color:var(--orange);font-weight:700}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;padding:8px 0;padding-bottom:calc(8px + var(--safe-bottom));z-index:100}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--txt3);cursor:pointer;font-family:inherit;padding:4px 0;min-height:44px;justify-content:center;transition:color .15s}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--txt3);cursor:pointer;font-family:inherit;padding:3px 0;min-height:44px;justify-content:center;transition:color .15s}
 .nav-btn.active{color:var(--orange)}
-.nav-icon{font-size:20px;line-height:1}
-.nav-label{font-size:10px;font-weight:600;letter-spacing:.03em}
+.nav-icon{font-size:18px;line-height:1}
+.nav-label{font-size:9px;font-weight:600;letter-spacing:.02em}
 .sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;display:none;align-items:flex-end}
 .sheet-overlay.open{display:flex}
 .sheet{background:var(--bg2);border-top:1px solid var(--border2);border-radius:18px 18px 0 0;width:100%;max-height:92vh;overflow-y:auto;padding:0 20px;padding-bottom:calc(24px + var(--safe-bottom));animation:slideUp .28s cubic-bezier(.32,1,.4,1)}
@@ -144,6 +144,132 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 
 .import-area:focus{border-color:var(--orange)}
 .util-btn{width:100%;padding:12px 16px;border-radius:10px;font-size:13px;font-family:inherit;cursor:pointer;margin-bottom:8px;min-height:46px;display:flex;align-items:center;justify-content:center;gap:6px}
 .view{display:none}.view.active{display:block}
+/* ── PREDICTOR ── */
+.pred-section{margin-bottom:20px}
+.pred-section-head{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--txt3);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.pred-section-head::after{content:'';flex:1;height:1px;background:var(--border)}
+.profile-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:8px}
+.pfield label{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);margin-bottom:5px}
+.pfield input,.pfield select{width:100%;font-family:'DM Mono',monospace;font-size:13px;padding:9px 10px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;color:var(--txt);outline:none;-webkit-appearance:none}
+.pfield input:focus,.pfield select:focus{border-color:var(--orange)}
+.pfield input::placeholder{color:var(--txt3)}
+.run-table-wrap{overflow-x:auto;margin-bottom:8px;-webkit-overflow-scrolling:touch}
+.run-table{width:100%;border-collapse:collapse;font-size:12px;min-width:360px}
+.run-table th{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);text-align:left;padding:6px 8px;border-bottom:1px solid var(--border);white-space:nowrap}
+.run-table td{padding:4px 5px;border-bottom:1px solid var(--border);vertical-align:middle}
+.run-table tr:last-child td{border-bottom:none}
+.run-table input{width:100%;font-family:'DM Mono',monospace;font-size:12px;padding:6px 7px;background:var(--bg4);border:1px solid transparent;border-radius:5px;color:var(--txt);outline:none;min-width:60px}
+.run-table input:focus{border-color:var(--orange)}
+.del-btn{background:none;border:none;color:var(--txt3);cursor:pointer;font-size:16px;padding:4px 7px;border-radius:4px;line-height:1;min-height:36px}
+.del-btn:active{color:var(--red)}
+.add-run-btn{margin-top:6px;background:transparent;border:1px solid var(--border2);border-radius:8px;padding:10px;font-family:'Syne',sans-serif;font-size:12px;color:var(--txt2);cursor:pointer;width:100%;letter-spacing:.03em;transition:all .15s}
+.add-run-btn:active{border-color:var(--orange);color:var(--orange)}
+.predict-btn{width:100%;padding:14px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;background:var(--orange);color:#fff;border:none;border-radius:12px;cursor:pointer;margin-bottom:14px;min-height:50px}
+.predict-btn:disabled{opacity:.4;cursor:not-allowed}
+.result-box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;display:none;margin-bottom:14px}
+.result-box.visible{display:block}
+.result-hero{padding:16px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end}
+.result-time-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3);margin-bottom:4px}
+.result-time{font-size:clamp(2rem,9vw,3rem);font-weight:700;color:var(--orange);line-height:1;letter-spacing:-.02em}
+.result-range{font-size:11px;color:var(--txt2);margin-top:4px;font-family:'DM Mono',monospace}
+.result-pace-box{text-align:right}
+.result-pace-label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);margin-bottom:3px}
+.result-pace-val{font-size:18px;font-weight:600;color:var(--txt);font-family:'DM Mono',monospace}
+.result-pace-sub{font-size:10px;color:var(--txt3);margin-top:2px}
+.conf-row{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.conf-bar-bg{flex:1;height:3px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.conf-bar-fill{height:100%;background:var(--orange);border-radius:2px;transition:width .8s ease}
+.conf-lbl{font-size:10px;color:var(--txt3);white-space:nowrap;font-family:'DM Mono',monospace}
+.result-grid{display:grid;grid-template-columns:repeat(2,1fr);border-bottom:1px solid var(--border)}
+.result-stat{padding:11px 14px;border-right:1px solid var(--border)}
+.result-stat:nth-child(2n){border-right:none}
+.result-stat:nth-child(n+3){border-top:1px solid var(--border)}
+.rs-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);margin-bottom:4px}
+.rs-val{font-size:16px;font-weight:600;color:var(--txt);font-family:'DM Mono',monospace}
+.rs-sub{font-size:10px;color:var(--txt3);margin-top:2px}
+.equiv-table{width:100%;border-collapse:collapse;border-bottom:1px solid var(--border)}
+.equiv-table td{padding:9px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--txt2);font-family:'DM Mono',monospace}
+.equiv-table td:last-child{text-align:right;color:var(--txt);font-weight:600}
+.equiv-table tr:last-child td{border-bottom:none;color:var(--orange)}
+.run-analysis{padding:12px 14px}
+.ra-title{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3);margin-bottom:8px}
+.ra-row{display:flex;align-items:center;gap:7px;padding:7px 9px;background:var(--bg3);border-radius:7px;margin-bottom:5px;flex-wrap:wrap;font-size:11px;font-family:'DM Mono',monospace}
+.ra-dist{font-weight:600;color:var(--txt);min-width:52px}
+.ra-time,.ra-pace,.ra-hr,.ra-hrr{color:var(--txt2)}
+.ra-pace{flex:1}
+.ra-weight{font-size:10px;color:var(--txt3);margin-left:auto}
+.badge{font-size:10px;padding:2px 7px;border-radius:5px;font-weight:600}
+.badge-easy{background:var(--blue-bg);color:var(--blue)}
+.badge-mod{background:var(--orange-bg);color:var(--orange)}
+.badge-hard{background:var(--red-bg);color:var(--red)}
+.method-note{padding:10px 14px;border-top:1px solid var(--border);font-size:10px;color:var(--txt3);line-height:1.7}
+.calc-tabs{display:flex;border:1px solid var(--border2);border-radius:9px;overflow:hidden;margin-bottom:12px}
+.calc-tab{flex:1;padding:9px 6px;font-family:'Syne',sans-serif;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;background:none;border:none;border-right:1px solid var(--border2);cursor:pointer;color:var(--txt3);transition:all .12s;min-height:38px}
+.calc-tab:last-child{border-right:none}
+.calc-tab.active{background:var(--orange);color:#fff}
+.calc-panel{display:none}.calc-panel.active{display:block}
+.calc-inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:10px}
+.calc-result{background:var(--bg3);border:1px solid var(--border);border-radius:10px;display:grid;grid-template-columns:repeat(2,1fr);overflow:hidden}
+.cr-item{padding:11px 12px;border-right:1px solid var(--border)}
+.cr-item:nth-child(2n){border-right:none}
+.cr-item:nth-child(n+3){border-top:1px solid var(--border)}
+.cr-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);margin-bottom:4px}
+.cr-val{font-size:18px;font-weight:700;color:var(--orange);font-family:'DM Mono',monospace}
+.cr-sub{font-size:10px;color:var(--txt3);margin-top:2px}
+.splits-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px}
+.splits-table th{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);text-align:left;padding:7px 8px;border-bottom:1px solid var(--border)}
+.splits-table td{padding:7px 8px;border-bottom:1px solid var(--border);color:var(--txt2);font-family:'DM Mono',monospace}
+.splits-table td:first-child{color:var(--txt);font-weight:600}
+.splits-table tr:last-child td{border-bottom:none;color:var(--orange);font-weight:600}
+.splits-table tr.half-row td{color:var(--blue)}
+.hint{font-size:10px;color:var(--txt3);margin-top:8px;line-height:1.6}
+/* ── STRENGTH ── */
+.str-phase-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;scrollbar-width:none}
+.str-phase-tabs::-webkit-scrollbar{display:none}
+.str-tab{font-size:11px;font-weight:600;padding:7px 14px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--txt2);white-space:nowrap;cursor:pointer;font-family:inherit;flex-shrink:0;min-height:32px;transition:all .15s}
+.str-tab.active{background:var(--gold);color:#0e0f0e;border-color:var(--gold)}
+.str-phase-desc{font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:14px;padding:12px 14px;background:var(--bg2);border-radius:10px;border:1px solid var(--border)}
+.str-week-grid{display:flex;flex-direction:column;gap:10px}
+.str-wcard{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px}
+.str-wcard.peak{border-left:3px solid var(--orange)}
+.str-wcard.taper{border-left:3px solid var(--green)}
+.str-wcard.race{border-left:3px solid var(--gold)}
+.str-w-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.str-w-label{font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;font-family:'DM Mono',monospace}
+.str-w-badge{font-size:10px;padding:3px 8px;border-radius:6px;font-weight:700}
+.str-badge-build{background:var(--blue-bg);color:var(--blue)}
+.str-badge-peak{background:var(--orange-bg);color:var(--orange)}
+.str-badge-taper{background:var(--green-bg);color:var(--green)}
+.str-badge-race{background:var(--gold-bg);color:var(--gold)}
+.str-badge-holiday{background:var(--bg4);color:var(--txt3)}
+.str-run-info{display:flex;justify-content:space-between;font-size:11px;color:var(--txt3);margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border);font-family:'DM Mono',monospace}
+.str-session-block{margin-bottom:12px}
+.str-session-block:last-child{margin-bottom:0}
+.str-session-title{font-size:12px;font-weight:700;color:var(--txt);margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.stag{font-size:9px;padding:3px 7px;border-radius:5px;font-weight:700;letter-spacing:.04em}
+.stag-gym{background:var(--green-bg);color:var(--green)}
+.stag-home{background:var(--blue-bg);color:var(--blue)}
+.str-divider{height:1px;background:var(--border);margin:10px 0}
+.ex-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bg4);gap:8px}
+.ex-row:last-child{border-bottom:none}
+.ex-name{color:var(--txt);flex:1;font-size:12px}
+.ex-sets{color:var(--txt3);font-size:11px;white-space:nowrap;font-family:'DM Mono',monospace;margin-left:4px;flex-shrink:0}
+.wt-pill{border-radius:6px;padding:3px 8px;font-size:10px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.wt-kb{background:var(--gold-bg);color:var(--gold)}
+.wt-db{background:var(--blue-bg);color:var(--blue)}
+.wt-machine{background:var(--green-bg);color:var(--green)}
+.wt-bw{background:var(--bg4);color:var(--txt2)}
+.wt-band{background:var(--purple-bg);color:var(--purple)}
+.str-note{margin-top:10px;background:var(--bg3);border-radius:8px;padding:9px 11px;font-size:11px;color:var(--txt2);line-height:1.55;border-left:2px solid var(--border2)}
+.str-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+
+
+.str-wcard-hdr{display:flex;align-items:center;gap:8px;padding:12px 14px;cursor:pointer;user-select:none;min-height:50px}
+.str-wcard-hdr:active{background:var(--bg3)}
+.str-w-focus{font-size:11px;color:var(--txt3);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.str-body{padding:12px 14px 4px}
+.str-body.open{display:block}
+.str-run-info{display:flex;justify-content:space-between;font-size:11px;color:var(--txt3);padding:0 14px 10px;font-family:'DM Mono',monospace}
 </style>
 </head>
 <body>
@@ -198,6 +324,112 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 
     <div class="sec-hdr" style="margin-top:4px"><span class="sec-title">Edit plan</span></div>
     <div id="editContent"></div>
   </div>
+
+  <div class="view" id="viewPredict">
+    <div class="pred-section">
+      <div class="pred-section-head">Your profile</div>
+      <div class="profile-grid">
+        <div class="pfield"><label>Age</label><input type="number" id="age" value="35" min="15" max="80"></div>
+        <div class="pfield"><label>Resting HR (bpm)</label><input type="number" id="rhr" value="55" min="35" max="90"></div>
+        <div class="pfield"><label>Max HR (bpm)</label><input type="number" id="mhr" placeholder="auto from age" min="140" max="220"></div>
+      </div>
+      <p style="font-size:10px;color:var(--txt3);line-height:1.6">Leave max HR blank to estimate from age (208 − 0.7×age). For best accuracy use the highest HR from a hard effort.</p>
+    </div>
+    <div class="pred-section">
+      <div class="pred-section-head">Recent runs</div>
+      <div class="run-table-wrap">
+        <table class="run-table">
+          <thead><tr><th>Dist (km)</th><th>Time</th><th>Avg HR</th><th>Days ago</th><th></th></tr></thead>
+          <tbody id="run-tbody"></tbody>
+        </table>
+      </div>
+      <button class="add-run-btn" onclick="addRun()">+ Add run</button>
+    </div>
+    <button class="predict-btn" onclick="predict()">Predict marathon time</button>
+    <div class="result-box" id="result-box">
+      <div class="result-hero">
+        <div>
+          <div class="result-time-label">Predicted marathon time</div>
+          <div class="result-time" id="res-time">—</div>
+          <div class="result-range" id="res-range"></div>
+        </div>
+        <div class="result-pace-box">
+          <div class="result-pace-label">Target pace</div>
+          <div class="result-pace-val" id="res-pace">—</div>
+          <div class="result-pace-sub" id="res-pace-hr"></div>
+        </div>
+      </div>
+      <div class="conf-row">
+        <div class="conf-bar-bg"><div class="conf-bar-fill" id="conf-fill" style="width:0%"></div></div>
+        <div class="conf-lbl" id="conf-label">—</div>
+      </div>
+      <div class="result-grid">
+        <div class="result-stat"><div class="rs-label">Max HR used</div><div class="rs-val" id="rs-mhr">—</div><div class="rs-sub" id="rs-mhr-sub">—</div></div>
+        <div class="result-stat"><div class="rs-label">HR reserve</div><div class="rs-val" id="rs-hrr">—</div><div class="rs-sub">bpm range</div></div>
+        <div class="result-stat"><div class="rs-label">Avg training HR</div><div class="rs-val" id="rs-avghr">—</div><div class="rs-sub">across runs</div></div>
+        <div class="result-stat"><div class="rs-label">Best pace</div><div class="rs-val" id="rs-best">—</div><div class="rs-sub">in training</div></div>
+      </div>
+      <table class="equiv-table">
+        <tr><td>5K equivalent</td><td id="eq-5k">—</td></tr>
+        <tr><td>10K equivalent</td><td id="eq-10k">—</td></tr>
+        <tr><td>Half marathon</td><td id="eq-half">—</td></tr>
+        <tr><td>Marathon prediction</td><td id="eq-full">—</td></tr>
+      </table>
+      <div class="run-analysis"><div class="ra-title">Per-run breakdown</div><div id="ra-rows"></div></div>
+      <div class="method-note"><strong style="color:var(--txt2)">Method:</strong> Riegel formula (T₂ = T₁ × (D₂/D₁)^1.06) corrected by heart rate reserve. More recent and longer runs weighted more heavily. Range reflects variation across your runs.</div>
+    </div>
+    <div class="pred-section" style="margin-top:4px">
+      <div class="pred-section-head">Pace & time calculator</div>
+      <div class="calc-tabs">
+        <button class="calc-tab active" onclick="switchCalc('time')">Time → Pace</button>
+        <button class="calc-tab" onclick="switchCalc('pace')">Pace → Time</button>
+        <button class="calc-tab" onclick="switchCalc('splits')">Splits</button>
+      </div>
+      <div class="calc-panel active" id="cp-time">
+        <div class="calc-inputs">
+          <div class="pfield"><label>Hours</label><input type="number" id="c-h" value="4" min="0" max="12" oninput="calcTP()"></div>
+          <div class="pfield"><label>Minutes</label><input type="number" id="c-m" value="30" min="0" max="59" oninput="calcTP()"></div>
+          <div class="pfield"><label>Seconds</label><input type="number" id="c-s" value="0" min="0" max="59" oninput="calcTP()"></div>
+          <div class="pfield"><label>Distance</label><select id="c-dist" onchange="calcTP()"><option value="42.195">Marathon</option><option value="21.0975">Half marathon</option><option value="10">10 km</option><option value="5">5 km</option></select></div>
+        </div>
+        <div class="calc-result" id="cr-time"></div>
+        <p class="hint">Enter finish time to see required pace per km and speed.</p>
+      </div>
+      <div class="calc-panel" id="cp-pace">
+        <div class="calc-inputs">
+          <div class="pfield"><label>Pace min</label><input type="number" id="p-m" value="6" min="2" max="20" oninput="calcPT()"></div>
+          <div class="pfield"><label>Pace sec</label><input type="number" id="p-s" value="30" min="0" max="59" oninput="calcPT()"></div>
+          <div class="pfield"><label>Distance</label><select id="p-dist" onchange="calcPT()"><option value="42.195">Marathon</option><option value="21.0975">Half marathon</option><option value="10">10 km</option><option value="5">5 km</option></select></div>
+        </div>
+        <div class="calc-result" id="cr-pace"></div>
+        <p class="hint">Enter target pace to see projected finish time.</p>
+      </div>
+      <div class="calc-panel" id="cp-splits">
+        <div class="calc-inputs">
+          <div class="pfield"><label>Goal (h)</label><input type="number" id="sp-h" value="4" min="2" max="8" oninput="calcSplits()"></div>
+          <div class="pfield"><label>Goal (min)</label><input type="number" id="sp-m" value="30" min="0" max="59" oninput="calcSplits()"></div>
+          <div class="pfield"><label>Strategy</label><select id="sp-strat" onchange="calcSplits()"><option value="even">Even splits</option><option value="neg">Negative (−1%)</option><option value="pos">Positive (+1%)</option></select></div>
+        </div>
+        <table class="splits-table"><thead><tr><th>Split</th><th>Dist</th><th>Pace</th><th>Seg</th><th>Cumulative</th></tr></thead><tbody id="splits-body"></tbody></table>
+        <p class="hint">Every 5km checkpoint, half marathon, and finish.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="view" id="viewStrength">
+    <div class="str-legend">
+      <div class="leg"><div class="leg-dot" style="background:var(--gold)"></div>Kettlebell</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--blue)"></div>Dumbbell</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--green)"></div>Machine</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--purple)"></div>Band</div>
+      <div class="leg"><div class="leg-dot" style="background:var(--txt3)"></div>Bodyweight</div>
+    </div>
+    <div class="str-phase-tabs" id="strTabs"></div>
+    <div class="str-phase-desc" id="strDesc"></div>
+    <div class="str-week-grid" id="strGrid"></div>
+  </div>
+
+  </div>
 </div>
 
 <nav class="bottom-nav">
@@ -210,6 +442,12 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 
   <button class="nav-btn" id="navEdit" onclick="setView('Edit',this)">
     <span class="nav-icon">✏️</span><span class="nav-label">Edit</span>
   </button>
+  <button class="nav-btn" id="navPredict" onclick="setView('Predict',this)">
+    <span class="nav-icon">🎯</span><span class="nav-label">Predict</span>
+  </button>
+  <button class="nav-btn" id="navStrength" onclick="setView('Strength',this)">
+    <span class="nav-icon">💪</span><span class="nav-label">Strength</span>
+  </button>
 </nav>
 
 <div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet(event)">
@@ -217,17 +455,25 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 
 </div>
 
 <script>
-const DEFAULT_PLAN = [{"week":1,"date":"Jun 07","longKm":14,"weekKm":45,"phase":"Build","focus":"Aerobic base","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"14km Long Run","km":14,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":2,"date":"Jun 14","longKm":16,"weekKm":47,"phase":"Build","focus":"Building endurance","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"16km Long Run","km":16,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":3,"date":"Jun 21","longKm":18,"weekKm":49,"phase":"Build","focus":"Steady aerobic","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"18km Long Run","km":18,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":4,"date":"Jun 28","longKm":20,"weekKm":51,"phase":"Build","focus":"Longer long run","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"20km Long Run","km":20,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":5,"date":"Jul 05","longKm":22,"weekKm":32,"phase":"Build","focus":"Holiday week","days":[{"dow":"Mon","session":"Holiday","km":0,"pace":"–","notes":"Public holiday","type":"rest"},{"dow":"Tue","session":"5km Easy","km":5,"pace":"7:10–7:30","notes":"Easy effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Thu","session":"5km Easy","km":5,"pace":"7:10–7:30","notes":"Easy effort","type":"easy"},{"dow":"Fri","session":"Rest","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"22km Holiday Run","km":22,"pace":"6:40–7:10","notes":"Enjoy the holiday route!","type":"long"}]},{"week":6,"date":"Jul 12","longKm":10,"weekKm":20,"phase":"Build","focus":"Holiday week","days":[{"dow":"Mon","session":"Holiday","km":0,"pace":"–","notes":"Public holiday","type":"rest"},{"dow":"Tue","session":"5km Easy","km":5,"pace":"7:10–7:30","notes":"Easy effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Thu","session":"5km Easy","km":5,"pace":"7:10–7:30","notes":"Easy effort","type":"easy"},{"dow":"Fri","session":"Rest","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"10km Holiday Run","km":10,"pace":"6:40–7:10","notes":"Easy holiday run","type":"long"}]},{"week":7,"date":"Jul 19","longKm":18,"weekKm":49,"phase":"Build","focus":"Reload 18km","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"18km Long Run","km":18,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":8,"date":"Jul 26","longKm":20,"weekKm":51,"phase":"Build","focus":"20km long run","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"20km Long Run","km":20,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":9,"date":"Aug 02","longKm":22,"weekKm":53,"phase":"Build","focus":"22km long run","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"22km Long Run","km":22,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":10,"date":"Aug 09","longKm":24,"weekKm":55,"phase":"Build","focus":"24km long run","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"24km Long Run","km":24,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":11,"date":"Aug 16","longKm":26,"weekKm":57,"phase":"Build","focus":"26km long run","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"26km Long Run","km":26,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":12,"date":"Aug 23","longKm":28,"weekKm":59,"phase":"Build","focus":"28km long run","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"28km Long Run","km":28,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":13,"date":"Aug 30","longKm":30,"weekKm":61,"phase":"Peak","focus":"30km — peak build","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"30km Long Run","km":30,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":14,"date":"Sep 06","longKm":32,"weekKm":63,"phase":"Peak","focus":"32km — peak long","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"32km Long Run","km":32,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":15,"date":"Sep 13","longKm":20,"weekKm":51,"phase":"Peak","focus":"Cutback 20km","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"20km Long Run","km":20,"pace":"6:40–7:10","notes":"Cutback — all easy pace","type":"long"}]},{"week":16,"date":"Sep 20","longKm":31,"weekKm":62,"phase":"Peak","focus":"31km race-specific","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"31km Long Run","km":31,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":17,"date":"Sep 27","longKm":33,"weekKm":64,"phase":"Peak","focus":"33km — peak week","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"33km Long Run","km":33,"pace":"6:40–7:10","notes":"Last 5-8km @ 6:24-6:30","type":"long"}]},{"week":18,"date":"Oct 04","longKm":21,"weekKm":52,"phase":"Taper","focus":"Taper 21km","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"21km Long Run","km":21,"pace":"6:40–7:10","notes":"Taper run — comfortable pace","type":"long"}]},{"week":19,"date":"Oct 11","longKm":14,"weekKm":45,"phase":"Taper","focus":"Taper 14km","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"5km easy run followed by strength session","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Comfortable aerobic effort","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Full rest day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"2km WU, 4km @ 6:15-6:25, 2km CD","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"AM: 5km Easy / PM: 5km Group Intervals","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest day","type":"rest"},{"dow":"Sun","session":"14km Long Run","km":14,"pace":"6:40–7:10","notes":"Easy taper run","type":"long"}]},{"week":20,"date":"Oct 18","longKm":42.2,"weekKm":73.2,"phase":"Race","focus":"Race week 🏁","days":[{"dow":"Mon","session":"5km Easy + Strength","km":5,"pace":"Easy pace","notes":"Last strength session — keep it light","type":"strength"},{"dow":"Tue","session":"8km Treadmill","km":8,"pace":"7:10–7:30","notes":"Easy shakeout","type":"easy"},{"dow":"Wed","session":"Rest","km":0,"pace":"–","notes":"Rest / travel day","type":"rest"},{"dow":"Thu","session":"8km Treadmill Tempo","km":8,"pace":"6:15–6:25","notes":"Short tempo to stay sharp","type":"interval"},{"dow":"Fri","session":"AM Easy + PM Intervals","km":10,"pace":"6:15–6:25","notes":"Last group session — light","type":"interval"},{"dow":"Sat","session":"REST","km":0,"pace":"–","notes":"Rest + carb load","type":"rest"},{"dow":"Sun","session":"RACE — Jakarta Marathon","km":42.2,"pace":"6:24–6:30","notes":"Jakarta Running Festival 2026 🏁","type":"race"}]}];
+const DEFAULT_PLAN = [{"week":1,"date":"Jun 07","longKm":14,"weekKm":45,"phase":"Build","focus":"Aerobic base","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Easy Treadmill + Gym Strength","km":5,"pace":"7:10\u20137:30","notes":"5km easy treadmill, then gym strength session. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Steady Tempo","km":8,"pace":"6:15\u20136:25","notes":"2km WU @ 7:10 \u00b7 4km @ 6:15\u20136:25 \u00b7 2km CD @ 7:10.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"14km Easy Long Run","km":14,"pace":"6:40\u20137:10","notes":"All 14km easy aerobic. Last 3\u20135km @ 6:24\u20136:30 if feeling good."}]},{"week":2,"date":"Jun 14","longKm":16,"weekKm":47,"phase":"Build","focus":"Building endurance","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Steady Treadmill + Gym Strength","km":5,"pace":"6:45\u20137:00","notes":"5km steady treadmill @ 6:45\u20137:00, then gym strength session. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Cruise Intervals","km":8,"pace":"6:10\u20136:20","notes":"2km WU \u00b7 3\u00d72km @ 6:10\u20136:20 with 60s rest \u00b7 2km CD.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"16km Easy Long Run","km":16,"pace":"6:40\u20137:10","notes":"All 16km easy aerobic. Last 3\u20135km @ 6:24\u20136:30 if feeling good."}]},{"week":3,"date":"Jun 21","longKm":18,"weekKm":49,"phase":"Build","focus":"Steady aerobic","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Progression Treadmill + Gym Strength","km":5,"pace":"7:15 \u2192 6:45","notes":"km 1\u20132 @ 7:15 \u00b7 km 3\u20134 @ 7:00 \u00b7 km 5 @ 6:45, then gym strength. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Over-Under","km":8,"pace":"6:05\u20136:35","notes":"2km WU \u00b7 5 rounds: 1km @ 6:05\u20136:10 then 1km @ 6:30\u20136:35 \u00b7 1km CD.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"18km Easy Long Run","km":18,"pace":"6:40\u20137:10","notes":"All 18km easy aerobic. Last 3\u20135km @ 6:24\u20136:30 if feeling good."}]},{"week":4,"date":"Jun 28","longKm":20,"weekKm":51,"phase":"Build","focus":"Longer long run","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Easy Treadmill + Gym Strength","km":5,"pace":"7:10\u20137:30","notes":"5km easy treadmill, then gym strength session. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Progressive Tempo","km":8,"pace":"6:40 \u2192 6:15","notes":"2km WU \u00b7 5km building: 6:40\u21926:32\u21926:25\u21926:20\u21926:15 \u00b7 1km CD.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"20km Easy Long Run","km":20,"pace":"6:40\u20137:10","notes":"All 20km easy aerobic. Last 3\u20135km @ 6:24\u20136:30 if feeling good."}]},{"week":5,"date":"Jul 05","longKm":22,"weekKm":32,"phase":"Build","focus":"Holiday week","days":[{"dow":"Mon","session":"Holiday","km":0,"pace":"\u2013","notes":"Public holiday \u2014 rest.","type":"rest"},{"dow":"Tue","session":"5km Easy","km":5,"pace":"7:10\u20137:30","notes":"Easy effort. No gym this week.","type":"easy"},{"dow":"Wed","session":"5km Easy Outdoor","km":5,"pace":"7:10\u20137:30","notes":"Easy outdoor run.","type":"easy"},{"dow":"Thu","session":"5km Easy","km":5,"pace":"7:10\u20137:30","notes":"Easy effort.","type":"easy"},{"dow":"Fri","session":"Rest","km":0,"pace":"\u2013","notes":"Rest day.","type":"rest"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Rest day.","type":"rest"},{"dow":"Sun","session":"22km Holiday Run","km":22,"pace":"6:40\u20137:10","notes":"Easy holiday long run. Enjoy the route, all easy pace.","type":"long"}]},{"week":6,"date":"Jul 12","longKm":10,"weekKm":20,"phase":"Build","focus":"Holiday week","days":[{"dow":"Mon","session":"Holiday","km":0,"pace":"\u2013","notes":"Public holiday \u2014 rest.","type":"rest"},{"dow":"Tue","session":"5km Easy","km":5,"pace":"7:10\u20137:30","notes":"Easy effort. No gym this week.","type":"easy"},{"dow":"Wed","session":"5km Easy Outdoor","km":5,"pace":"7:10\u20137:30","notes":"Easy outdoor run.","type":"easy"},{"dow":"Thu","session":"5km Easy","km":5,"pace":"7:10\u20137:30","notes":"Easy effort.","type":"easy"},{"dow":"Fri","session":"Rest","km":0,"pace":"\u2013","notes":"Rest day.","type":"rest"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Rest day.","type":"rest"},{"dow":"Sun","session":"10km Holiday Run","km":10,"pace":"6:40\u20137:10","notes":"Easy holiday run. No structure, just enjoy it.","type":"long"}]},{"week":7,"date":"Jul 19","longKm":18,"weekKm":49,"phase":"Build","focus":"Reload 18km","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Progression Treadmill + Gym Strength","km":5,"pace":"7:15 \u2192 6:45","notes":"km 1\u20132 @ 7:15 \u00b7 km 3\u20134 @ 7:00 \u00b7 km 5 @ 6:45, then gym strength. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Cruise Intervals","km":8,"pace":"6:10\u20136:20","notes":"2km WU \u00b7 3\u00d72km @ 6:10\u20136:20 with 60s rest \u00b7 2km CD.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","session":"18km Easy Long Run","km":18,"pace":"6:40\u20137:10","notes":"Reload after holiday weeks. All easy. Last 3km @ 6:24\u20136:30 if feeling good.","type":"long"}]},{"week":8,"date":"Jul 26","longKm":20,"weekKm":51,"phase":"Build","focus":"20km long run","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Easy Treadmill + Gym Strength","km":5,"pace":"7:10\u20137:30","notes":"5km easy treadmill, then gym strength session. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Over-Under","km":8,"pace":"6:05\u20136:35","notes":"2km WU \u00b7 5 rounds: 1km @ 6:05\u20136:10 then 1km @ 6:30\u20136:35 \u00b7 1km CD.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"20km MP Progression Long Run","km":20,"pace":"6:24\u20137:10","notes":"km 1\u201312 @ 6:50\u20137:10 easy \u00b7 last 8km @ 6:24\u20136:30 marathon pace. Finish strong."}]},{"week":9,"date":"Aug 02","longKm":22,"weekKm":53,"phase":"Build","focus":"22km long run","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Easy Treadmill + Gym Strength","km":5,"pace":"7:10\u20137:30","notes":"5km easy treadmill, then gym strength session. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Progressive Tempo","km":8,"pace":"6:40 \u2192 6:15","notes":"2km WU \u00b7 5km building: 6:40\u21926:32\u21926:25\u21926:20\u21926:15 \u00b7 1km CD.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"22km Long Run with Surges","km":22,"pace":"6:40\u20137:10","notes":"Mostly easy @ 6:40\u20137:10. Include 3\u00d73min surges @ 6:00\u20136:10 spread through km 5 to 17. Full recovery between."}]},{"week":10,"date":"Aug 09","longKm":24,"weekKm":55,"phase":"Build","focus":"24km long run","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Steady Treadmill + Gym Strength","km":5,"pace":"6:45\u20137:00","notes":"5km steady treadmill @ 6:45\u20137:00, then gym strength session. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Threshold Reps","km":8,"pace":"6:00\u20136:10","notes":"2km WU \u00b7 4\u00d71.2km @ 6:00\u20136:10 with 90s rest \u00b7 2km CD.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"24km Easy Long Run","km":24,"pace":"6:40\u20137:10","notes":"km 1\u201314 @ 6:40\u20137:10 easy \u00b7 last 10km @ 6:24\u20136:30 marathon pace. Controlled finish."}]},{"week":11,"date":"Aug 16","longKm":26,"weekKm":57,"phase":"Build","focus":"26km long run","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Progression Treadmill + Gym Strength","km":5,"pace":"7:15 \u2192 6:45","notes":"km 1\u20132 @ 7:15 \u00b7 km 3\u20134 @ 7:00 \u00b7 km 5 @ 6:45, then gym strength. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Steady Tempo","km":8,"pace":"6:15\u20136:25","notes":"2km WU @ 7:10 \u00b7 4km @ 6:15\u20136:25 \u00b7 2km CD @ 7:10.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"26km MP Progression Long Run","km":26,"pace":"6:24\u20137:10","notes":"km 1\u201316 @ 6:50\u20137:10 easy \u00b7 last 10km @ 6:24\u20136:30 marathon pace. Finish strong."}]},{"week":12,"date":"Aug 23","longKm":28,"weekKm":59,"phase":"Build","focus":"28km long run","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Easy Treadmill + Gym Strength","km":5,"pace":"7:10\u20137:30","notes":"5km easy treadmill, then gym strength session. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Cruise Intervals","km":8,"pace":"6:10\u20136:20","notes":"2km WU \u00b7 3\u00d72km @ 6:10\u20136:20 with 60s rest \u00b7 2km CD.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"28km Long Run with Surges","km":28,"pace":"6:40\u20137:10","notes":"Mostly easy @ 6:40\u20137:10. Include 4\u00d73min surges @ 6:00\u20136:10 spread through km 5 to 23. Full recovery between."}]},{"week":13,"date":"Aug 30","longKm":30,"weekKm":61,"phase":"Peak","focus":"30km \u2014 peak build","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Easy Treadmill + Gym Strength","km":5,"pace":"7:10\u20137:30","notes":"5km easy treadmill, then gym strength session. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Over-Under","km":8,"pace":"6:05\u20136:35","notes":"2km WU \u00b7 5 rounds: 1km @ 6:05\u20136:10 then 1km @ 6:30\u20136:35 \u00b7 1km CD.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"30km Easy Long Run","km":30,"pace":"6:40\u20137:10","notes":"km 1\u201318 @ 6:40\u20137:10 easy \u00b7 last 12km @ 6:24\u20136:30 marathon pace. Controlled finish."}]},{"week":14,"date":"Sep 06","longKm":32,"weekKm":63,"phase":"Peak","focus":"32km \u2014 peak long","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Steady Treadmill + Gym Strength","km":5,"pace":"6:45\u20137:00","notes":"5km steady treadmill @ 6:45\u20137:00, then gym strength session. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Progressive Tempo","km":8,"pace":"6:40 \u2192 6:15","notes":"2km WU \u00b7 5km building: 6:40\u21926:32\u21926:25\u21926:20\u21926:15 \u00b7 1km CD.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"32km MP Progression Long Run","km":32,"pace":"6:24\u20137:10","notes":"km 1\u201320 @ 6:50\u20137:10 easy \u00b7 last 12km @ 6:24\u20136:30 marathon pace. Finish strong."}]},{"week":15,"date":"Sep 13","longKm":20,"weekKm":51,"phase":"Peak","focus":"Cutback 20km","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Progression Treadmill + Gym Strength","km":5,"pace":"7:15 \u2192 6:45","notes":"km 1\u20132 @ 7:15 \u00b7 km 3\u20134 @ 7:00 \u00b7 km 5 @ 6:45, then gym strength. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Threshold Reps","km":8,"pace":"6:00\u20136:10","notes":"2km WU \u00b7 4\u00d71.2km @ 6:00\u20136:10 with 90s rest \u00b7 2km CD.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"20km Long Run with Surges","km":20,"pace":"6:40\u20137:10","notes":"Mostly easy @ 6:40\u20137:10. Include 3\u00d73min surges @ 6:00\u20136:10 spread through km 5 to 15. Full recovery between."}]},{"week":16,"date":"Sep 20","longKm":31,"weekKm":62,"phase":"Peak","focus":"31km race-specific","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Easy Treadmill + Gym Strength","km":5,"pace":"7:10\u20137:30","notes":"5km easy treadmill, then gym strength session. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Steady Tempo","km":8,"pace":"6:15\u20136:25","notes":"2km WU @ 7:10 \u00b7 4km @ 6:15\u20136:25 \u00b7 2km CD @ 7:10.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"31km Easy Long Run","km":31,"pace":"6:40\u20137:10","notes":"km 1\u201318 @ 6:40\u20137:10 easy \u00b7 last 13km @ 6:24\u20136:30 marathon pace. Controlled finish."}]},{"week":17,"date":"Sep 27","longKm":33,"weekKm":64,"phase":"Peak","focus":"33km \u2014 peak week","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Easy Treadmill + Gym Strength","km":5,"pace":"7:10\u20137:30","notes":"5km easy treadmill, then gym strength session. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Cruise Intervals","km":8,"pace":"6:10\u20136:20","notes":"2km WU \u00b7 3\u00d72km @ 6:10\u20136:20 with 60s rest \u00b7 2km CD.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"33km MP Progression Long Run","km":33,"pace":"6:24\u20137:10","notes":"km 1\u201320 @ 6:50\u20137:10 easy \u00b7 last 13km @ 6:24\u20136:30 marathon pace. Finish strong."}]},{"week":18,"date":"Oct 04","longKm":21,"weekKm":52,"phase":"Taper","focus":"Taper 21km","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Steady Treadmill + Gym Strength","km":5,"pace":"6:45\u20137:00","notes":"5km steady treadmill @ 6:45\u20137:00, then gym strength session. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"8km Steady Tempo","km":8,"pace":"6:15\u20136:25","notes":"2km WU @ 7:10 \u00b7 4km @ 6:15\u20136:25 \u00b7 2km CD @ 7:10.","type":"interval"},{"dow":"Fri","session":"Home Strength + Group Intervals","km":10,"pace":"5:50\u20136:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab for this week's exercises) \u00b7 PM: 5km group intervals session.","type":"interval"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"21km Easy Long Run","km":21,"pace":"6:50\u20137:15","notes":"All 21km easy and comfortable. Focus on feel, not pace. Taper week."}]},{"week":19,"date":"Oct 11","longKm":14,"weekKm":45,"phase":"Taper","focus":"Taper 14km","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy aerobic treadmill. Recovery after Sunday long run \u2014 keep it genuinely easy.","type":"easy"},{"dow":"Tue","session":"5km Easy Treadmill + Gym Strength","km":5,"pace":"7:10\u20137:30","notes":"5km easy treadmill, then gym strength session. See \ud83d\udcaa Strength tab for this week's gym exercises.","type":"strength"},{"dow":"Wed","session":"5\u20136km Easy Outdoor","km":6,"pace":"7:00\u20137:20","notes":"Easy outdoor commute run. Comfortable aerobic effort, no watch pressure.","type":"easy"},{"dow":"Thu","session":"6km Steady Tempo","km":6,"pace":"6:20\u20136:30","notes":"2km WU \u00b7 3km @ 6:20\u20136:30 \u00b7 1km CD. Shorter taper tempo.","type":"interval"},{"dow":"Fri","session":"Home Strength + Easy Run","km":5,"pace":"7:00\u20137:20","notes":"AM: home strength session (see \ud83d\udcaa Strength tab) \u00b7 PM: easy 5km or rest. No group intervals in taper.","type":"strength"},{"dow":"Sat","session":"Rest","km":0,"pace":"\u2013","notes":"Full rest. Walk, stretch, foam roll.","type":"rest"},{"dow":"Sun","type":"long","session":"14km Easy Long Run","km":14,"pace":"6:50\u20137:15","notes":"All 14km easy and comfortable. Focus on feel, not pace. Taper week."}]},{"week":20,"date":"Oct 18","longKm":42.2,"weekKm":73.2,"phase":"Race","focus":"Race week \ud83c\udfc1","days":[{"dow":"Mon","session":"8km Easy Treadmill","km":8,"pace":"7:10\u20137:30","notes":"Easy shakeout treadmill. Last proper run before race week taper.","type":"easy"},{"dow":"Tue","session":"5km Easy Treadmill + Gym Strength","km":5,"pace":"7:10\u20137:30","notes":"Light 5km + final light gym activation. See \ud83d\udcaa Strength tab \u2014 race week session.","type":"strength"},{"dow":"Wed","session":"5km Easy Outdoor","km":5,"pace":"7:10\u20137:30","notes":"Easy outdoor run.","type":"easy"},{"dow":"Thu","session":"6km Easy Shakeout","km":6,"pace":"7:00\u20137:20","notes":"Easy 6km. A few strides at the end if legs feel good.","type":"easy"},{"dow":"Fri","session":"Rest + Carb Load","km":0,"pace":"\u2013","notes":"Rest + carb load. No home strength this week.","type":"rest"},{"dow":"Sat","session":"Rest + Carb Load","km":0,"pace":"\u2013","notes":"Rest + carb load.","type":"rest"},{"dow":"Sun","session":"RACE \u2014 Jakarta Marathon","km":42.2,"pace":"6:24\u20136:30","notes":"Jakarta Running Festival 2026 \ud83c\udfc1 Start conservative, run your race.","type":"race"}]}];
 
-const STRENGTH_A=['Squats 3×12','Reverse lunges 3×10 each','Hip thrusts 3×15','Calf raises 3×20','Dead bug 3×10','Side plank 3×30s'];
-const STRENGTH_B=['Romanian deadlift 3×10','Step-ups 3×12 each','Single-leg squat 3×8','Nordic curl 3×6','Glute bridge 3×15','Plank 3×45s'];
 
 const PLAN_START = new Date('2026-06-07');
 const RACE_DATE  = new Date('2026-10-25');
 const today = new Date(); today.setHours(0,0,0,0);
 
 let S = {completed:{},open:{},filter:'all',strava:false,plan:null};
-try{const s=localStorage.getItem('jmv5');if(s)Object.assign(S,JSON.parse(s))}catch(e){}
+try{
+  const s=localStorage.getItem('jmv5');
+  if(s){
+    const parsed=JSON.parse(s);
+    // Only restore specific keys, never filter (always default to 'all')
+    if(parsed.completed) S.completed=parsed.completed;
+    if(parsed.strava) S.strava=parsed.strava;
+    if(parsed.plan) S.plan=parsed.plan;
+    if(parsed.open) S.open=parsed.open;
+  }
+}catch(e){}
 function getPlan(){return S.plan||DEFAULT_PLAN}
 function save(){try{localStorage.setItem('jmv5',JSON.stringify({completed:S.completed,strava:S.strava,plan:S.plan}))}catch(e){alert('Storage full — clear old data in Edit tab');}}
 
@@ -257,6 +503,8 @@ function setView(v,btn){
   btn.classList.add('active');
   if(v==='Volume')renderVolume();
   if(v==='Edit')renderEdit();
+  if(v==='Predict')renderPredict();
+  if(v==='Strength')renderStrength();
 }
 
 function setFilter(f,btn){
@@ -367,12 +615,15 @@ function openModal(wi,di){
   const day=p.days[di];
   const key=wi+'_'+di;
   const done=!!S.completed[key];
-  const strExs=(wi%2===0)?STRENGTH_A:STRENGTH_B;
   const typeLabel={easy:'Easy Run',interval:'Interval / Tempo',long:'Long Run',strength:'Strength + Easy',rest:'Rest Day',race:'RACE DAY 🏁'};
-  let sBlock='';
-  if(day.type==='strength'){
-    sBlock=`<div class="strength-block"><div class="sb-title">💪 Strength (${wi%2===0?'Set A':'Set B'})</div>${strExs.map(e=>`<div class="sb-item">${e}</div>`).join('')}</div>`;
-  }
+  const isTuStrength=day.type==='strength';
+  const isFriHomeStrength=day.dow==='Fri'&&day.type==='interval'&&day.notes&&day.notes.includes('Strength tab');
+  const sBlock=(isTuStrength||isFriHomeStrength)
+    ?`<div class="strength-block" onclick="goToStrengthWeek(${wi+1})" style="cursor:pointer">
+        <div class="sb-title">💪 ${isTuStrength?'Gym':'Home'} strength session <span style="float:right;font-size:12px;color:var(--gold);font-weight:400">View in Strength tab →</span></div>
+        <div class="sb-item" style="font-family:'Syne',sans-serif;line-height:1.5">Tap to jump to Week ${wi+1} in the <strong style="color:var(--gold)">💪 Strength tab</strong> — ${isTuStrength?'full gym session after your treadmill run':'home session before group intervals'}.</div>
+      </div>`
+    :'';
   document.getElementById('sheetContent').innerHTML=`
     <div class="sheet-title">${day.dow} · Week ${wi+1}</div>
     <div class="sheet-sub">${p.focus} · ${fmtDate(addDays(PLAN_START,wi*7+di))}</div>
@@ -495,12 +746,313 @@ function importPlan(){
 function resetProgress(){if(!confirm('Clear all completed sessions?'))return;S.completed={};save();renderWeeks();renderStats();}
 function resetPlanToDefault(){if(!confirm('Restore default plan? Your edits will be lost.'))return;S.plan=null;save();renderWeeks();renderStats();renderEdit();}
 
+
+// ── PREDICTOR ──
+let runs=[
+  {dist:10,time:'52:30',hr:148,daysAgo:3},
+  {dist:16,time:'1:28:00',hr:152,daysAgo:7},
+  {dist:8,time:'40:00',hr:138,daysAgo:10},
+  {dist:21,time:'1:58:30',hr:156,daysAgo:14},
+];
+function renderPredict(){renderRuns();calcTP();calcPT();calcSplits();}
+function renderRuns(){
+  const tb=document.getElementById('run-tbody');if(!tb)return;
+  tb.innerHTML='';
+  runs.forEach((r,i)=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><input type="number" step="0.1" min="1" value="${r.dist}" oninput="runs[${i}].dist=parseFloat(this.value)||0" /></td>
+    <td><input type="text" value="${r.time}" placeholder="52:30 or 1:05:00" oninput="runs[${i}].time=this.value" style="min-width:90px" /></td>
+    <td><input type="number" min="80" max="220" value="${r.hr}" oninput="runs[${i}].hr=parseInt(this.value)||0" /></td>
+    <td><input type="number" min="0" max="120" value="${r.daysAgo}" oninput="runs[${i}].daysAgo=parseInt(this.value)||0" style="min-width:50px" /></td>
+    <td><button class="del-btn" onclick="removeRun(${i})">✕</button></td>`;
+    tb.appendChild(tr);
+  });
+}
+function addRun(){runs.push({dist:10,time:'55:00',hr:145,daysAgo:7});renderRuns();}
+function removeRun(i){runs.splice(i,1);renderRuns();}
+function parseTime(t){
+  const p=t.trim().split(':').map(Number);
+  if(p.some(isNaN))return null;
+  if(p.length===2)return p[0]*60+p[1];
+  if(p.length===3)return p[0]*3600+p[1]*60+p[2];
+  return null;
+}
+function fmtTime(s){
+  s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;
+  return h+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+}
+function fmtPace(spk){spk=Math.round(spk);return Math.floor(spk/60)+':'+String(spk%60).padStart(2,'0');}
+function predict(){
+  const age=parseInt(document.getElementById('age').value)||35;
+  const rhr=parseInt(document.getElementById('rhr').value)||55;
+  const mhrIn=parseInt(document.getElementById('mhr').value);
+  const maxHR=mhrIn>0?mhrIn:Math.round(208-0.7*age);
+  const hrr=maxHR-rhr;
+  const valid=runs.filter(r=>r.dist>0&&r.hr>0&&parseTime(r.time));
+  if(valid.length<2){alert('Add at least 2 runs with distance, time and HR.');return;}
+  const MARATHON=42.195,TARGET_HRR=0.82;
+  const processed=valid.map(r=>{
+    const secs=parseTime(r.time),paceSpk=secs/r.dist;
+    const hrrFrac=(r.hr-rhr)/hrr,recency=Math.exp(-r.daysAgo/30);
+    const distW=Math.min(r.dist/21,1.0),weight=recency*(0.5+0.5*distW);
+    let projected=secs*Math.pow(MARATHON/r.dist,1.06);
+    const hrCorr=hrrFrac/TARGET_HRR;
+    projected*=hrCorr*1.03;
+    if(r.dist<10)projected*=1.04;else if(r.dist<16)projected*=1.01;
+    return{...r,secs,paceSpk,hrrFrac,weight,projected};
+  });
+  const totalW=processed.reduce((s,p)=>s+p.weight,0);
+  const wAvg=processed.reduce((s,p)=>s+p.projected*p.weight,0)/totalW;
+  const variance=processed.reduce((s,p)=>s+p.weight*(p.projected-wAvg)**2,0)/totalW;
+  const sd=Math.sqrt(variance);
+  const confPct=Math.max(40,Math.min(95,Math.round(85-(sd/wAvg)*400)));
+  const opt=wAvg-sd*0.8,pess=wAvg+sd*0.8,mPace=wAvg/MARATHON;
+  document.getElementById('res-time').textContent=fmtTime(wAvg);
+  document.getElementById('res-range').textContent='Range: '+fmtTime(opt)+' – '+fmtTime(pess);
+  document.getElementById('res-pace').textContent=fmtPace(mPace)+' /km';
+  document.getElementById('res-pace-hr').textContent='~'+Math.round(maxHR*TARGET_HRR)+' bpm target';
+  document.getElementById('conf-fill').style.width=confPct+'%';
+  document.getElementById('conf-label').textContent=confPct+'% confidence · '+valid.length+' run'+(valid.length>1?'s':'');
+  document.getElementById('rs-mhr').textContent=maxHR;
+  document.getElementById('rs-mhr-sub').textContent=mhrIn>0?'from input':'estimated';
+  document.getElementById('rs-hrr').textContent=hrr;
+  document.getElementById('rs-avghr').textContent=Math.round(processed.reduce((s,r)=>s+r.hr*r.weight,0)/totalW);
+  document.getElementById('rs-best').textContent=fmtPace(Math.min(...processed.map(r=>r.paceSpk)))+' /km';
+  const riegel=(d)=>wAvg*Math.pow(d/MARATHON,1.06);
+  document.getElementById('eq-5k').textContent=fmtTime(riegel(5));
+  document.getElementById('eq-10k').textContent=fmtTime(riegel(10));
+  document.getElementById('eq-half').textContent=fmtTime(riegel(21.0975));
+  document.getElementById('eq-full').textContent=fmtTime(wAvg);
+  const ra=document.getElementById('ra-rows');ra.innerHTML='';
+  processed.forEach(r=>{
+    const hrrPct=Math.round(r.hrrFrac*100);
+    const cat=r.hrrFrac<0.65?'easy':r.hrrFrac<0.78?'mod':'hard';
+    const catLabel={easy:'easy',mod:'moderate',hard:'hard'}[cat];
+    ra.innerHTML+=`<div class="ra-row"><span class="ra-dist">${r.dist}km</span><span class="ra-time">${r.time}</span><span class="ra-pace">${fmtPace(r.paceSpk)}/km</span><span class="ra-hr">${r.hr}bpm</span><span class="ra-hrr">${hrrPct}%HRR</span><span class="badge badge-${cat}">${catLabel}</span><span class="ra-weight">w=${r.weight.toFixed(2)}</span></div>`;
+  });
+  document.getElementById('result-box').classList.add('visible');
+}
+function switchCalc(tab){
+  ['time','pace','splits'].forEach((t,i)=>{
+    document.querySelectorAll('.calc-tab')[i].classList.toggle('active',t===tab);
+    document.getElementById('cp-'+t).classList.toggle('active',t===tab);
+  });
+}
+function calcTP(){
+  const h=+document.getElementById('c-h').value||0,m=+document.getElementById('c-m').value||0,s=+document.getElementById('c-s').value||0;
+  const dist=+document.getElementById('c-dist').value;
+  const distLabel=document.getElementById('c-dist').options[document.getElementById('c-dist').selectedIndex].text;
+  const total=h*3600+m*60+s;if(!total||!dist)return;
+  const pkm=total/dist,pmi=total/(dist/1.60934),kmh=(dist/(total/3600)).toFixed(2);
+  document.getElementById('cr-time').innerHTML=`<div class="cr-item"><div class="cr-label">Pace / km</div><div class="cr-val">${fmtPace(pkm)}</div><div class="cr-sub">min:sec</div></div><div class="cr-item"><div class="cr-label">Pace / mile</div><div class="cr-val">${fmtPace(pmi)}</div><div class="cr-sub">min:sec</div></div><div class="cr-item"><div class="cr-label">Finish time</div><div class="cr-val">${fmtTime(total)}</div><div class="cr-sub">${distLabel}</div></div><div class="cr-item"><div class="cr-label">Speed</div><div class="cr-val">${kmh}</div><div class="cr-sub">km/h</div></div>`;
+}
+function calcPT(){
+  const pm=+document.getElementById('p-m').value||0,ps=+document.getElementById('p-s').value||0;
+  const dist=+document.getElementById('p-dist').value;
+  const distLabel=document.getElementById('p-dist').options[document.getElementById('p-dist').selectedIndex].text;
+  const pkm=pm*60+ps;if(!pkm||!dist)return;
+  const total=pkm*dist,pmi=pkm*1.60934,kmh=(3600/pkm).toFixed(2),half=fmtTime(pkm*dist/2);
+  document.getElementById('cr-pace').innerHTML=`<div class="cr-item"><div class="cr-label">Finish time</div><div class="cr-val">${fmtTime(total)}</div><div class="cr-sub">${distLabel}</div></div><div class="cr-item"><div class="cr-label">Pace / mile</div><div class="cr-val">${fmtPace(pmi)}</div><div class="cr-sub">min:sec</div></div><div class="cr-item"><div class="cr-label">Speed</div><div class="cr-val">${kmh}</div><div class="cr-sub">km/h</div></div><div class="cr-item"><div class="cr-label">Half split</div><div class="cr-val">${half}</div><div class="cr-sub">at same pace</div></div>`;
+}
+function calcSplits(){
+  const h=+document.getElementById('sp-h').value||0,m=+document.getElementById('sp-m').value||0;
+  const total=h*3600+m*60,strat=document.getElementById('sp-strat').value;
+  if(!total)return;
+  const base=total/42.195,points=[5,10,15,20,21.0975,25,30,35,40,42.195];
+  const labels=['5km','10km','15km','20km','Half','25km','30km','35km','40km','Finish'];
+  let prev=0,cum=0;
+  document.getElementById('splits-body').innerHTML=points.map((km,i)=>{
+    const seg=km-prev;let pace=base;
+    if(strat==='neg')pace=base*(1+0.01*(1-km/42.195));
+    if(strat==='pos')pace=base*(1-0.01*(1-km/42.195));
+    const segS=pace*seg;cum+=segS;prev=km;
+    const isHalf=i===4;
+    return `<tr${isHalf?' class="half-row"':''}><td>${labels[i]}</td><td>${seg<1?seg.toFixed(3):seg.toFixed(1)}</td><td>${fmtPace(pace)}/km</td><td>${fmtTime(segS)}</td><td>${fmtTime(cum)}</td></tr>`;
+  }).join('');
+}
+
+
+// ── STRENGTH ──
+function wpClass(wt){
+  if(!wt)return'';const t=wt.toLowerCase();
+  if(t.includes('kb')||t.includes('kettlebell'))return'wt-pill wt-kb';
+  if(t.includes('db')||t.includes('dumbbell'))return'wt-pill wt-db';
+  if(t.includes('machine')||t.includes('leg press')||t.includes('leg curl')||t.includes('cable'))return'wt-pill wt-machine';
+  if(t.includes('band'))return'wt-pill wt-band';
+  return'wt-pill wt-bw';
+}
+const STR_GYM={label:"Tue — Gym (after 5km treadmill)",tag:"GYM"};
+const STR_HOME={label:"Fri AM — Home (before intervals)",tag:"HOME"};
+const STR_DATA=[
+{id:0,label:"Build A",sub:"Wks 1–6",desc:"Weeks 1–4 full training weeks building aerobic base. Weeks 5–6 are holiday weeks. Gym: single-leg RDL, step-up, KB sumo deadlift, leg press, leg curl + KB swing. Core work on Wednesday home session.",weeks:[
+{w:1,date:"Jun 7",long:"14km",vol:"45km",phase:"Build",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"3×10 ea",wt:"8–10kg DB"},{n:"DB step-up with knee drive",s:"3×10 ea",wt:"8kg DB"},{n:"KB sumo deadlift",s:"3×10",wt:"16–20kg KB"},{n:"Leg press (single leg)",s:"3×12 ea",wt:"Machine — light"},{n:"Seated leg curl",s:"3×12",wt:"Machine — light"},{n:"KB swing (finisher)",s:"3×15",wt:"16kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"3×12",wt:"Med band"},{n:"Clamshell",s:"3×15 ea",wt:"Light band"},{n:"Dead bug",s:"3×8 ea",wt:"Bodyweight"},{n:"Side-lying hip abduction",s:"3×15 ea",wt:"Light band"},{n:"Copenhagen plank",s:"3×20s ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×15 ea",wt:"Bodyweight"}]}
+],note:"Learn all movements. Keep machine weights light — form first."},
+{w:2,date:"Jun 14",long:"16km",vol:"47km",phase:"Build",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"3×10 ea",wt:"10kg DB"},{n:"DB step-up with knee drive",s:"3×10 ea",wt:"8–10kg DB"},{n:"KB sumo deadlift",s:"3×12",wt:"20kg KB"},{n:"Leg press (single leg)",s:"3×12 ea",wt:"Machine — add 5kg"},{n:"Seated leg curl",s:"3×12",wt:"Machine — add 2.5kg"},{n:"KB swing (finisher)",s:"3×15",wt:"16–20kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"3×15",wt:"Med band"},{n:"Clamshell",s:"3×15 ea",wt:"Light band"},{n:"Dead bug",s:"3×10 ea",wt:"Bodyweight"},{n:"Band walk lateral",s:"3×12 ea",wt:"Light band"},{n:"Side plank",s:"3×25s ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×15 ea",wt:"Bodyweight"}]}
+],note:"Add small increments if week 1 felt comfortable."},
+{w:3,date:"Jun 21",long:"18km",vol:"49km",phase:"Build",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"3×10 ea",wt:"10–12kg DB"},{n:"DB step-up with knee drive",s:"4×10 ea",wt:"10kg DB"},{n:"KB sumo deadlift",s:"4×10",wt:"20–24kg KB"},{n:"Leg press (single leg)",s:"4×10 ea",wt:"Machine — progressive"},{n:"Seated leg curl",s:"3×12",wt:"Machine — progressive"},{n:"KB swing (finisher)",s:"3×15",wt:"20kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"3×15",wt:"Heavy band"},{n:"Clamshell",s:"3×20 ea",wt:"Med band"},{n:"Dead bug",s:"3×10 ea",wt:"Bodyweight"},{n:"Band walk lateral",s:"3×15 ea",wt:"Med band"},{n:"Copenhagen plank",s:"3×25s ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×20 ea",wt:"Bodyweight"}]}
+],note:"18km long run Sunday. Keep gym intensity moderate."},
+{w:4,date:"Jun 28",long:"20km",vol:"51km",phase:"Build",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"4×8 ea",wt:"12kg DB"},{n:"DB step-up with knee drive",s:"4×10 ea",wt:"10–12kg DB"},{n:"KB sumo deadlift",s:"4×10",wt:"24kg KB"},{n:"Leg press (single leg)",s:"4×10 ea",wt:"Machine — push load"},{n:"Seated leg curl",s:"4×10",wt:"Machine — push load"},{n:"KB swing (finisher)",s:"4×12",wt:"20kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"4×12",wt:"Heavy band"},{n:"Clamshell",s:"3×20 ea",wt:"Med band"},{n:"Dead bug",s:"3×12 ea",wt:"Bodyweight"},{n:"Band walk lateral",s:"3×15 ea",wt:"Med band"},{n:"Side plank + hip dip",s:"3×8 ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×20 ea",wt:"Bodyweight"}]}
+],note:"20km long run. You can push intensity here."},
+{w:5,date:"Jul 5",long:"22km",vol:"32km",phase:"Build",holiday:true,sessions:[
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"2×15",wt:"Med band"},{n:"Clamshell",s:"2×15 ea",wt:"Light band"},{n:"Dead bug",s:"2×8 ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"2×15 ea",wt:"Bodyweight"}]}
+],note:"Holiday week — home session only. Keep it light and enjoy the break."},
+{w:6,date:"Jul 12",long:"10km",vol:"20km",phase:"Build",holiday:true,sessions:[
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"2×12",wt:"Light band"},{n:"Dead bug",s:"2×8 ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"2×12 ea",wt:"Bodyweight"}]}
+],note:"Holiday week 2 — very light, 3 exercises only."}
+]},
+{id:1,label:"Build B",sub:"Wks 7–12",desc:"Back to full training after holidays. Progressive overload resumes. Introduce Bulgarian split squat from week 9 as legs adapt. Volume and intensity build to 28km long run.",weeks:[
+{w:7,date:"Jul 19",long:"18km",vol:"49km",phase:"Build",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"3×10 ea",wt:"12kg DB"},{n:"DB step-up with knee drive",s:"4×10 ea",wt:"10–12kg DB"},{n:"KB sumo deadlift",s:"4×10",wt:"24kg KB"},{n:"Leg press (single leg)",s:"4×10 ea",wt:"Machine — reload"},{n:"Seated leg curl",s:"3×12",wt:"Machine — reload"},{n:"KB swing (finisher)",s:"3×15",wt:"20kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"3×15",wt:"Heavy band"},{n:"Clamshell",s:"3×15 ea",wt:"Med band"},{n:"Dead bug",s:"3×10 ea",wt:"Bodyweight"},{n:"Band walk lateral",s:"3×15 ea",wt:"Med band"},{n:"Copenhagen plank",s:"3×25s ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×20 ea",wt:"Bodyweight"}]}
+],note:"Reload week after holidays. Reset weights to where week 4 left off."},
+{w:8,date:"Jul 26",long:"20km",vol:"51km",phase:"Build",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"4×8 ea",wt:"12–14kg DB"},{n:"DB step-up with knee drive",s:"4×10 ea",wt:"12kg DB"},{n:"KB sumo deadlift",s:"4×10",wt:"24–28kg KB"},{n:"Leg press (single leg)",s:"4×10 ea",wt:"Machine — progressive"},{n:"Seated leg curl",s:"4×10",wt:"Machine — progressive"},{n:"KB swing (finisher)",s:"4×12",wt:"20kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"4×12",wt:"Heavy band"},{n:"Single-leg glute bridge",s:"3×12 ea",wt:"Bodyweight"},{n:"Dead bug",s:"3×12 ea",wt:"Bodyweight"},{n:"Band walk lateral",s:"3×15 ea",wt:"Med band"},{n:"Side plank + hip dip",s:"3×8 ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×20 ea",wt:"Bodyweight"}]}
+],note:"Build intensity back. Introduce single-leg glute bridge."},
+{w:9,date:"Aug 2",long:"22km",vol:"53km",phase:"Build",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"4×8 ea",wt:"14kg DB"},{n:"DB Bulgarian split squat",s:"3×8 ea",wt:"8–10kg DB"},{n:"KB sumo deadlift",s:"4×10",wt:"28kg KB"},{n:"Leg press (single leg)",s:"3×12 ea",wt:"Machine — moderate"},{n:"Seated leg curl",s:"3×12",wt:"Machine — moderate"},{n:"KB swing (finisher)",s:"3×15",wt:"20–24kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"3×15",wt:"Heavy band"},{n:"Single-leg glute bridge",s:"3×15 ea",wt:"Bodyweight"},{n:"Clamshell",s:"3×20 ea",wt:"Med band"},{n:"Band walk lateral",s:"3×15 ea",wt:"Med band"},{n:"Copenhagen plank",s:"3×30s ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×15 ea",wt:"Bodyweight"}]}
+],note:"Introduce Bulgarian split squat. Start light — this will be sore."},
+{w:10,date:"Aug 9",long:"24km",vol:"55km",phase:"Build",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"4×8 ea",wt:"14–16kg DB"},{n:"DB Bulgarian split squat",s:"3×10 ea",wt:"10kg DB"},{n:"KB sumo deadlift",s:"4×10",wt:"28–32kg KB"},{n:"Leg press (single leg)",s:"4×10 ea",wt:"Machine — add load"},{n:"Seated leg curl",s:"4×10",wt:"Machine — add load"},{n:"KB swing (finisher)",s:"4×12",wt:"24kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"4×12",wt:"Heavy band"},{n:"Single-leg glute bridge",s:"3×15 ea",wt:"Bodyweight"},{n:"Clamshell",s:"3×20 ea",wt:"Heavy band"},{n:"Band walk lateral",s:"3×20 ea",wt:"Med band"},{n:"Side plank + rotation",s:"3×8 ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×20 ea",wt:"Bodyweight"}]}
+],note:"24km long run. Strong week — push gym if legs allow."},
+{w:11,date:"Aug 16",long:"26km",vol:"57km",phase:"Build",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"3×10 ea",wt:"16kg DB"},{n:"DB Bulgarian split squat",s:"3×10 ea",wt:"10–12kg DB"},{n:"KB sumo deadlift",s:"3×12",wt:"28–32kg KB"},{n:"Leg press (single leg)",s:"3×12 ea",wt:"Machine — hold load"},{n:"Seated leg curl",s:"3×12",wt:"Machine — hold load"},{n:"KB swing (finisher)",s:"3×15",wt:"24kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"3×15",wt:"Heavy band"},{n:"Single-leg glute bridge",s:"3×15 ea",wt:"Bodyweight"},{n:"Clamshell",s:"3×20 ea",wt:"Heavy band"},{n:"Band walk lateral",s:"3×15 ea",wt:"Med band"},{n:"Copenhagen plank",s:"3×30s ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×15 ea",wt:"Bodyweight"}]}
+],note:"26km long run. Keep gym to 3 sets — recovery matters now."},
+{w:12,date:"Aug 23",long:"28km",vol:"59km",phase:"Build",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"3×10 ea",wt:"16kg DB"},{n:"DB Bulgarian split squat",s:"3×8 ea",wt:"12kg DB"},{n:"KB sumo deadlift",s:"3×10",wt:"32kg KB"},{n:"Leg press (single leg)",s:"3×10 ea",wt:"Machine — peak load"},{n:"Seated leg curl",s:"3×10",wt:"Machine — peak load"},{n:"KB swing (finisher)",s:"3×12",wt:"24kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"3×12",wt:"Heavy band"},{n:"Single-leg glute bridge",s:"3×12 ea",wt:"Bodyweight"},{n:"Clamshell",s:"3×15 ea",wt:"Heavy band"},{n:"Band walk lateral",s:"3×15 ea",wt:"Med band"},{n:"Dead bug",s:"3×10 ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×12 ea",wt:"Bodyweight"}]}
+],note:"28km long run. Final heavy-ish gym week before peak phase."}
+]},
+{id:2,label:"Peak",sub:"Wks 13–17",desc:"Peak training phase — long runs 30–33km. Gym shifts from strength-building to maintenance. No new load increases after week 14. Focus on showing up fresh for long runs and quality sessions.",weeks:[
+{w:13,date:"Aug 30",long:"30km",vol:"61km",phase:"Peak",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"3×8 ea",wt:"16kg DB"},{n:"DB Bulgarian split squat",s:"3×8 ea",wt:"12kg DB"},{n:"KB sumo deadlift",s:"3×10",wt:"28–32kg KB"},{n:"Leg press (single leg)",s:"3×12 ea",wt:"Machine — moderate"},{n:"Seated leg curl",s:"3×12",wt:"Machine — moderate"},{n:"KB swing (finisher)",s:"3×15",wt:"24kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"3×15",wt:"Heavy band"},{n:"Single-leg glute bridge",s:"3×15 ea",wt:"Bodyweight"},{n:"Clamshell",s:"3×20 ea",wt:"Heavy band"},{n:"Band walk lateral",s:"3×20 ea",wt:"Med band"},{n:"Copenhagen plank",s:"3×30s ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×15 ea",wt:"Bodyweight"}]}
+],note:"First 30km long run. Back off gym weights by 5–10% vs week 12."},
+{w:14,date:"Sep 6",long:"32km",vol:"63km",phase:"Peak",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"3×8 ea",wt:"16–18kg DB"},{n:"DB Bulgarian split squat",s:"3×8 ea",wt:"12–14kg DB"},{n:"KB sumo deadlift",s:"3×10",wt:"28–32kg KB"},{n:"Leg press (single leg)",s:"3×12 ea",wt:"Machine — slightly heavier"},{n:"Seated leg curl",s:"3×12",wt:"Machine — slightly heavier"},{n:"KB swing (finisher)",s:"3×15",wt:"24kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"3×15",wt:"Heavy band"},{n:"Single-leg glute bridge",s:"3×15 ea",wt:"Bodyweight"},{n:"Clamshell",s:"3×20 ea",wt:"Heavy band"},{n:"Band walk lateral",s:"3×20 ea",wt:"Med band"},{n:"Copenhagen plank",s:"3×30s ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×15 ea",wt:"Bodyweight"}]}
+],note:"32km peak long run. Last time to add load in gym — no increases after this week."},
+{w:15,date:"Sep 13",long:"20km",vol:"51km",phase:"Peak",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"3×8 ea",wt:"16–18kg DB"},{n:"DB Bulgarian split squat",s:"3×8 ea",wt:"12kg DB"},{n:"KB sumo deadlift",s:"3×10",wt:"28–32kg KB"},{n:"Leg press (single leg)",s:"3×12 ea",wt:"Machine — slightly heavier"},{n:"Seated leg curl",s:"3×12",wt:"Machine — slightly heavier"},{n:"KB swing (finisher)",s:"3×15",wt:"24kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"3×15",wt:"Heavy band"},{n:"Single-leg glute bridge",s:"3×15 ea",wt:"Bodyweight"},{n:"Clamshell",s:"3×20 ea",wt:"Heavy band"},{n:"Band walk lateral",s:"3×20 ea",wt:"Med band"},{n:"Dead bug",s:"3×10 ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×12 ea",wt:"Bodyweight"}]}
+],note:"Cutback week — long run drops to 20km. You can push slightly harder in gym this week only."},
+{w:16,date:"Sep 20",long:"31km",vol:"62km",phase:"Peak",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"3×8 ea",wt:"16–18kg DB"},{n:"DB Bulgarian split squat",s:"3×8 ea",wt:"12kg DB"},{n:"KB sumo deadlift",s:"3×8",wt:"28–32kg KB"},{n:"Leg press (single leg)",s:"3×10 ea",wt:"Machine — hold load"},{n:"Seated leg curl",s:"3×10",wt:"Machine — hold load"},{n:"KB swing (finisher)",s:"3×12",wt:"24kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"3×12",wt:"Heavy band"},{n:"Single-leg glute bridge",s:"3×12 ea",wt:"Bodyweight"},{n:"Clamshell",s:"3×15 ea",wt:"Heavy band"},{n:"Band walk lateral",s:"3×15 ea",wt:"Med band"},{n:"Dead bug",s:"3×10 ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"3×12 ea",wt:"Bodyweight"}]}
+],note:"31km race-specific. Back to maintenance mode — no new load increases."},
+{w:17,date:"Sep 27",long:"33km",vol:"64km",phase:"Peak",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"3×6 ea",wt:"14–16kg DB"},{n:"DB Bulgarian split squat",s:"3×6 ea",wt:"10–12kg DB"},{n:"KB sumo deadlift",s:"3×6",wt:"24–28kg KB"},{n:"Leg press (single leg)",s:"3×8 ea",wt:"Machine — back off 10%"},{n:"Seated leg curl",s:"3×8",wt:"Machine — back off 10%"},{n:"KB swing (finisher)",s:"3×10",wt:"20kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"2×12",wt:"Med band"},{n:"Single-leg glute bridge",s:"2×12 ea",wt:"Bodyweight"},{n:"Clamshell",s:"2×15 ea",wt:"Med band"},{n:"Band walk lateral",s:"2×12 ea",wt:"Light band"},{n:"Dead bug",s:"2×8 ea",wt:"Bodyweight"}]}
+],note:"Final peak week — 33km long run. Reduce reps, back off 10%. Begin taper transition."}
+]},
+{id:3,label:"Taper",sub:"Wks 18–20",desc:"Three-week taper — strength drops to activation only. 2 sets max, lighter loads, same exercises. No new movements. Goal is freshness on race day. Nothing to prove in the gym now.",weeks:[
+{w:18,date:"Oct 4",long:"21km",vol:"52km",phase:"Taper",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"2×8 ea",wt:"12kg DB"},{n:"DB Bulgarian split squat",s:"2×8 ea",wt:"8–10kg DB"},{n:"KB sumo deadlift",s:"2×8",wt:"20–24kg KB"},{n:"Leg press (single leg)",s:"2×10 ea",wt:"Machine — drop 20%"},{n:"Seated leg curl",s:"2×10",wt:"Machine — drop 20%"},{n:"KB swing (finisher)",s:"2×10",wt:"16–20kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"2×10",wt:"Med band"},{n:"Single-leg glute bridge",s:"2×10 ea",wt:"Bodyweight"},{n:"Clamshell",s:"2×12 ea",wt:"Light band"},{n:"Dead bug",s:"2×8 ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"2×12 ea",wt:"Bodyweight"}]}
+],note:"Taper week 1 — 2 sets only, drop all weights ~20%. Legs should feel noticeably fresher by the weekend."},
+{w:19,date:"Oct 11",long:"14km",vol:"45km",phase:"Taper",sessions:[
+{info:STR_GYM,exs:[{n:"Single-leg Romanian deadlift",s:"2×6 ea",wt:"10kg DB"},{n:"KB sumo deadlift",s:"2×6",wt:"16–20kg KB"},{n:"Leg press (single leg)",s:"2×8 ea",wt:"Machine — very light"},{n:"Seated leg curl",s:"2×8",wt:"Machine — very light"},{n:"KB swing (finisher)",s:"2×8",wt:"16kg KB"}]},
+{info:STR_HOME,exs:[{n:"Banded hip thrust",s:"2×10",wt:"Light band"},{n:"Clamshell",s:"2×10 ea",wt:"Light band"},{n:"Dead bug",s:"2×6 ea",wt:"Bodyweight"},{n:"Single-leg calf raise",s:"2×10 ea",wt:"Bodyweight"}]}
+],note:"Taper week 2 — 5 gym, 4 home. Very light loads. Legs should feel springy."},
+{w:20,date:"Oct 18",long:"RACE DAY",vol:"73.2km",phase:"Race",sessions:[
+{info:{label:"Tue — Final activation (gym)",tag:"GYM"},exs:[{n:"Single-leg glute bridge",s:"1×10 ea",wt:"Bodyweight"},{n:"KB swing",s:"1×10",wt:"12kg KB"},{n:"Leg press (single leg)",s:"1×8 ea",wt:"Machine — very light"},{n:"Single-leg calf raise",s:"1×10 ea",wt:"Bodyweight"}]}
+],note:"Race week. One very light Monday session only — wake up the muscles, nothing more. No Wednesday session. Jakarta Marathon Sunday 25 Oct. You have done the work! 🏁"}
+]}
+];
+let strCurrentPhase=0;
+function renderStrength(){
+  const tabs=document.getElementById('strTabs');
+  const desc=document.getElementById('strDesc');
+  const grid=document.getElementById('strGrid');
+  if(!tabs||!desc||!grid)return;
+  if(!tabs.children.length){
+    STR_DATA.forEach(ph=>{
+      const b=document.createElement('button');
+      b.className='str-tab';b.textContent=ph.label+' '+ph.sub;
+      b.onclick=()=>{strCurrentPhase=ph.id;renderStrPhase();};
+      tabs.appendChild(b);
+    });
+  }
+  renderStrPhase();
+}
+let strOpen={};
+function renderStrPhase(){
+  const tabs=document.getElementById('strTabs');
+  const desc=document.getElementById('strDesc');
+  const grid=document.getElementById('strGrid');
+  tabs.querySelectorAll('.str-tab').forEach((b,i)=>b.classList.toggle('active',i===strCurrentPhase));
+  const ph=STR_DATA[strCurrentPhase];
+  desc.textContent=ph.desc;
+  let html='';
+  ph.weeks.forEach(wk=>{
+    const phClass=wk.holiday?'':wk.phase==='Taper'?'taper':wk.phase==='Peak'?'peak':wk.phase==='Race'?'race':'';
+    const badgeCls=wk.holiday?'str-badge-holiday':wk.phase==='Taper'?'str-badge-taper':wk.phase==='Peak'?'str-badge-peak':wk.phase==='Race'?'str-badge-race':'str-badge-build';
+    const key=strCurrentPhase+'_'+wk.w;
+    const isOpen=!!strOpen[key];
+    const sessCount=wk.sessions.reduce((s,sess)=>s+sess.exs.length,0);
+    let bodyHtml='';
+    if(isOpen){
+      let inner='';
+      wk.sessions.forEach((sess,si)=>{
+        if(si>0)inner+=`<div class="str-divider"></div>`;
+        const tagCls=sess.info.tag==='GYM'?'stag stag-gym':'stag stag-home';
+        inner+=`<div class="str-session-block"><div class="str-session-title"><span class="${tagCls}">${sess.info.tag}</span>${sess.info.label}</div>`;
+        sess.exs.forEach(e=>{inner+=`<div class="ex-row"><span class="ex-name">${e.n}<span class="ex-sets"> ${e.s}</span></span><span class="${wpClass(e.wt)}">${e.wt}</span></div>`;});
+        inner+=`</div>`;
+      });
+      if(wk.note)inner+=`<div class="str-note">${wk.note}</div>`;
+      bodyHtml=`<div class="str-body open">${inner}</div>`;
+    }
+    html+=`<div class="str-wcard${phClass?' '+phClass:''}" id="strWeek_${wk.w}">
+      <div class="str-wcard-hdr" onclick="toggleStrWeek('${key}')">
+        <div class="str-w-label">W${wk.w} · ${wk.date}</div>
+        <div class="str-w-focus">${wk.sessions[0]?wk.sessions[0].exs[0].n+' +${sessCount} exercises':''}</div>
+        <span class="str-w-badge ${badgeCls}">${wk.phase}</span>
+        <div class="w-chev${isOpen?' open':''}">▾</div>
+      </div>
+      <div class="str-run-info" style="padding:0 14px 8px;margin:0;border-bottom:${isOpen?'1px solid var(--border)':'none'}"><span>Long: <strong>${wk.long}</strong></span><span>Vol: <strong>${wk.vol}</strong></span></div>
+      ${bodyHtml}
+    </div>`;
+  });
+  grid.innerHTML=html;
+}
+function toggleStrWeek(key){
+  strOpen[key]=!strOpen[key];
+  renderStrPhase();
+}
+const STR_WEEK_PHASE={1:0,2:0,3:0,4:0,5:0,6:0,7:1,8:1,9:1,10:1,11:1,12:1,13:2,14:2,15:2,16:2,17:2,18:3,19:3,20:3};
+function goToStrengthWeek(weekNum){
+  closeSheet();
+  const btn=document.getElementById('navStrength');
+  setView('Strength',btn);
+  const phaseId=STR_WEEK_PHASE[weekNum]??0;
+  strCurrentPhase=phaseId;
+  const key=phaseId+'_'+weekNum;
+  strOpen[key]=true;
+  renderStrPhase();
+  setTimeout(()=>{
+    const el=document.getElementById('strWeek_'+weekNum);
+    if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+  },80);
+}
+// ── INIT ──
 (function(){
-  if(S.strava)toggleStrava();
-  renderStats();
+  if(S.strava) toggleStrava();
+  // Always open current week (or W1 before plan starts) — never rely on saved open state
   const cw=currentWeek();
-  const openWi=cw>=0?cw:0;
-  if(!S.open[openWi])S.open[openWi]=true;
+  S.open[cw>=0?cw:0]=true;
+  renderStats();
   renderWeeks();
 })();
 </script>
